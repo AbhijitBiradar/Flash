@@ -1,5 +1,9 @@
 package com.hrm.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class ResourceUtil {
 	public static String getResourcePath(String resource) {
 		String path = getBaseResourcePath() + resource;
@@ -12,7 +16,8 @@ public class ResourceUtil {
 		return path;
 	}
 	
-	public static InputStream getResourcePathInputStream(String path) throws FileNotFoundException{
-		return new FileInputStream(ResourceHelper.getResourcePath(path));
+	public static void getResourcePathInputStream(String path) throws FileNotFoundException{
+		//return new FileInputStream(ResourceHelper.getResourcePath(path));
+		//trturn type InputStream
 	}
 }

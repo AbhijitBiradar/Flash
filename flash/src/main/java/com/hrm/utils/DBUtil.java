@@ -1,6 +1,14 @@
 package com.hrm.utils;
 
 public class DBUtil {
+	
+	//create a connection
+	//select data
+	//update data
+	//insert data
+	//delete data
+	
+	
 	public Connection con;
 	public Statement stmt;
 	

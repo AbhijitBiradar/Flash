@@ -1,8 +1,30 @@
 package com.hrm.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Iterator;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+
 public class ExcelUtil {
 	public static final Logger logger  = Logger.getLogger(Excel_reader.class.getName());
 
+	//load excel file
+	//get workbook details
+	//get row value
+	//get column value
+	//get cell value
+	
+	//create a new excel
+	//create a new workbook
+	//create a new row
+	//create a new colum
+	//create a cell value
+	
+	
+	
+	
 	public String[][] getExcelData(String excellocation, String sheetName) {
 		try {
 			logger.info("Creating excel object:-"+excellocation);
@@ -76,13 +98,5 @@ public class ExcelUtil {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		String excellocation = "/Users/bsingh5/git/seleniumHybridFramework/hybridFramework/src/main/java/com/hybridFramework/data/TestData.xlsx";
-		String sheetName = "LoginTestData";
-		Excel_reader excel = new Excel_reader();
-		excel.getExcelData(excellocation, sheetName);
-
-	}
+	}	
 }

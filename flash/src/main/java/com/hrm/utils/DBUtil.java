@@ -1,64 +1,185 @@
 package com.hrm.utils;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class DBUtil {
-	
-	//create a connection
-	//select data
-	//update data
-	//insert data
-	//delete data
-	
-	
-	public Connection con;
-	public Statement stmt;
-	
-	public Statement getStatement() throws ClassNotFoundException, SQLException{
+	private Connection con;
+	private Statement statement;
+	private PreparedStatement preparedStatement;
+	private String dbURL;
+	private String dbUserName;
+	private String dbPassword;
+
+	public void createDBConnection(String dbURL, String dbUserName, String dbPassword) {		
 		try {
-			String driver = "com.mysql.cj.jdbc.Driver";
-			String connection = "jdbc:mysql://localhost:3306/customer";
-			String userName = "root";
-			String password = "password";
-			Class.forName(driver);
-			con = DriverManager.getConnection(connection, userName, password);
-			stmt = con.createStatement();
-			return stmt;
+			System.out.println("Initializing datbase connection");
+			con = DriverManager.getConnection(dbURL, dbUserName, dbPassword);
+			if (con != null) {
+				System.out.println("Connected to the database!");
+			} else {
+				System.out.println("Failed to make connection!");
+			}
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return stmt;
 	}
-	
-	public void insertData(String query) throws ClassNotFoundException, SQLException{
-		Statement sta = getStatement();
-		sta.executeUpdate(query);
-	}
-	
-	public ResultSet getData(String query) throws ClassNotFoundException, SQLException{
-		ResultSet data = getStatement().executeQuery(query);
-		return data;
-	}
-	
-	public void updateData(String query) throws ClassNotFoundException, SQLException{
-		getStatement().executeUpdate(query);
-		
-	}
-	
-	public static string TestDataFileConnection()
-    {
-        var fileName = ConfigurationManager.AppSettings["TestDataSheetPath"];
-        var con = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source = {0}; Extended Properties=Excel 12.0;", fileName);
-        return con;
-    }
 
-    public static UserData GetTestData(string keyName)
-    {
-        using (var connection = new OleDbConnection(TestDataFileConnection()))
-        {
-            connection.Open();
-            var query = string.Format("select * from [DataSet$] where key='{0}'", keyName);
-            var value = connection.Query<UserData>(query).FirstOrDefault();
-            connection.Close();
-            return value;
-        }
-    }
+	public void createATable(String dbURL, String dbUserName, String dbPassword, String sqlQuery) {
+		try {
+			createDBConnection(dbURL, dbUserName, dbPassword);			
+			statement = con.createStatement();
+			statement.execute(sqlQuery);
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void createATable(String sqlQuery) {
+		try {
+			if (con == null) {
+				createDBConnection(dbURL, dbUserName, dbPassword);
+			}
+			statement = con.createStatement();
+			statement.execute(sqlQuery);
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int insertIntoDB(String dbURL, String dbUserName, String dbPassword, String sqlQuery) {
+		try {
+			createDBConnection(dbURL, dbUserName, dbPassword);
+			statement = con.createStatement();
+			int row = statement.executeUpdate(sqlQuery);
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int insertIntoDB(String sqlQuery) {
+		try {
+			if (con == null) {
+				createDBConnection(dbURL, dbUserName, dbPassword);
+			}
+			statement = con.createStatement();
+			int row = statement.executeUpdate(sqlQuery);
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int updateIntoDB(String dbURL, String dbUserName, String dbPassword, String sqlQuery) {
+		try {
+			createDBConnection(dbURL, dbUserName, dbPassword);
+			statement = con.createStatement();
+			int row = statement.executeUpdate(sqlQuery);
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int updateIntoDB(String sqlQuery) {
+		try {
+			if (con == null) {
+				createDBConnection(dbURL, dbUserName, dbPassword);
+			}
+			statement = con.createStatement();
+			int row = statement.executeUpdate(sqlQuery);
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int deleteFromDB(String dbURL, String dbUserName, String dbPassword, String sqlQuery) {
+		try {
+			createDBConnection(dbURL, dbUserName, dbPassword);
+			preparedStatement = con.prepareStatement(sqlQuery);
+			preparedStatement.setString(1, "mkyong");
+
+			int row = preparedStatement.executeUpdate();
+
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int deleteFromDB(String sqlQuery) {
+		try {
+			if (con == null) {
+				createDBConnection(dbURL, dbUserName, dbPassword);
+			}
+			preparedStatement = con.prepareStatement(sqlQuery);
+			preparedStatement.setString(1, "mkyong");
+
+			int row = preparedStatement.executeUpdate();
+
+			return row;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public ResultSet selectDataFromDB(String dbURL, String dbUserName, String dbPassword, String sqlQuery) {
+		try {
+			createDBConnection(dbURL, dbUserName, dbPassword);
+			preparedStatement = con.prepareStatement(sqlQuery);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			return resultSet;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ResultSet selectDataFromDB(String sqlQuery) {
+		try {
+			if (con == null) {
+				createDBConnection(dbURL, dbUserName, dbPassword);
+			}
+			preparedStatement = con.prepareStatement(sqlQuery);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			return resultSet;
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

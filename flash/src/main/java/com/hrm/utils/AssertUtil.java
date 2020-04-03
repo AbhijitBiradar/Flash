@@ -1,50 +1,79 @@
 package com.hrm.utils;
 
+import java.util.logging.Logger;
+
 public class AssertUtil {
-	public static synchronized boolean verifyElementPresent( WebElement element) {
-		boolean isDispalyed = false;
-		try {
-			 isDispalyed= element.isDisplayed();
-			 log.info(element.getText()+" is dispalyed");
+	public static final Logger log  = Logger.getLogger(AssertUtil.class.getName());
+	
+	public boolean assertEqual(String expected, String actual) {
+		if(expected.contentEquals(actual)) {
+			log.info(expected + " and " + "are equal");
+			return true;
 		}
-		catch(Exception ex) {
-			log.error("Element not found " + ex);
-		}
-		
-		return isDispalyed;
+		log.info(expected + " and " + "are not equal");
+		return false;
 	}
 	
-	public static synchronized boolean verifyElementNotPresent( WebElement element) {
-		boolean isDispalyed = false;
-		try {
-			 element.isDisplayed();
-			 log.info(element.getText()+" is dispalyed");
+	public boolean assertEqual(String expected, String actual, String message) {
+		if(expected.contentEquals(actual)) {
+			log.info(message);
+			return true;
 		}
-		catch(Exception ex) {
-			log.error("Element not found " + ex);
-			isDispalyed = true;
-		}
-		
-		return isDispalyed;
+		log.info(message);
+		return false;
 	}
 	
-	public static synchronized boolean verifyTextEquals( WebElement element,String expectedText) {
-		boolean flag = false;
-		try {
-			String actualText=element.getText();
-			if(actualText.equals(expectedText)) {
-				log.info("actualText is :"+actualText+" expected text is: "+expectedText);
-				return flag=true;
-			}
-			else {
-				log.error("actualText is :"+actualText+" expected text is: "+expectedText);
-				return flag;
-			}
+	public boolean assertNotEqual(String expected, String actual) {
+		if(!expected.contentEquals(actual)) {
+			log.info(expected + " and " + "are not equal");
+			return true;
 		}
-		catch(Exception ex) {
-			log.error("actualText is :"+element.getText()+" expected text is: "+expectedText);
-			log.info("text not matching" + ex);
-			return flag;
+		log.info(expected + " and " + "are equal");
+		return false;
+	}
+	
+	public boolean assertNotEqual(String expected, String actual, String message) {
+		if(!expected.contentEquals(actual)) {
+			log.info(message);
+			return true;
 		}
+		log.info(message);
+		return false;
+	}
+	
+	public boolean assertTrue(boolean condition, String message) {
+		if(condition) {
+			log.info(message);
+			return true;
+		}
+		log.info(message);
+		return false;		
+	}	
+	
+	public boolean assertTrue(boolean condition) {
+		if(condition) {
+			log.info("condition is true");
+			return true;
+		}
+		log.info("condition is false");
+		return false;		
+	}	
+	
+	public boolean assertFalse(boolean condition) {
+		if(!condition) {
+			log.info("condition is false");
+			return true;
+		}
+		log.info("condition is true");
+		return false;		
+	}	
+	
+	public boolean assertFalse(boolean condition, String message) {
+		if(!condition) {
+			log.info(message);
+			return true;
+		}
+		log.info(message);
+		return false;		
 	}
 }
